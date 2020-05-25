@@ -1,0 +1,36 @@
+### DI 
+依赖注入是以可测试的方式构建松耦合的架构的技术。
+
+> nestjs里provider作为DI context的一部分。provider由两个部分组成：
+value和token。通过token获取value。
+
+
+问题
+1. 如何设置已知要注入的provider？
+ 直接在module的provider里设置
+2. 不知道要给用户什么provider的情况怎么处理？
+3. 需要在运行时计算provider怎么处理？
+动态的providers
+
+动态的providers主要是因为decorator的执行顺序，
+所以不理解的时候想一下decorator的执行顺序
+
+KOA的中间件VSExpress的中间件
+1. KOA是基于promise的，Express是基于回调的
+2. Express的中间件必须调用next或者发送回请求，否则request不会结束；
+  KOA的话会直接返回了，但是一旦调用了next，KOA的这个中间件就要等下一个
+  中间件结束，它才会完成。Express则不会，一旦离开了express的中间件，
+  reponse将不能做任何有意义的事情了(但是异步的情况确是可以的)，当然确实需要的话可以
+  观察response stream。常见的例子比如记录响应时间。
+3. 关于koa中间件的注意事项，一定要await/return next。否则这个中间件就算是执行完了
+4. 错误处理，express的错误处理必须放在中间件链最后；koa的错误处理放在最前.
+
+HTTP请求相关的一切都是在middleware里完成的。
+
+关于中间最重要的是要理解**中间件的持续传递**：
+一旦一个中间件完成了它的任务，它可选的调用中间件链的下一个中间件。
+
+
+
+
+
